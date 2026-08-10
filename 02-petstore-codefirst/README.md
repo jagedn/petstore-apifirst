@@ -2,7 +2,7 @@
 
 ## Java 25
 
-sdk env
+sdk use java 25.0.4-graal
 
 ## Create
 
