@@ -1,1 +1,1 @@
-# Chapter title
+# OpenAPI Client
