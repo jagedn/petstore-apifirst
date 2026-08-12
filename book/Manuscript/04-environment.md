@@ -36,7 +36,7 @@ Vamos a indicarle a Sdkman que la instale (y si queremos la marcaremos como por 
 Es hora de crear el primer proyecto usando el propio Micronaut:
 
 ```
-$ create-app --inplace --build=gradle --jdk=25 \
+$ mn create-app --inplace --build=gradle --jdk=25 \
     --lang=java --test=spock \
     --features=validation,openapi,swagger-ui \
     com.incsteps.petstore

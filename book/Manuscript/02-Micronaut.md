@@ -18,6 +18,21 @@ Micronaut es un framework JVM moderno y modular diseñado específicamente para 
 - **Cero reflexión en runtime**: Al no depender de la reflexión para la inyección de dependencias, el tiempo de arranque de la aplicación es prácticamente independiente de la cantidad de beans o controladores que tenga el proyecto
 - **Consumo mínimo de memoria**: La eliminación de caches de reflexión internas permite que la aplicación arranque consumiendo una fracción de la memoria RAM requerida por otros frameworks tradicionales.
 
+### Maven vs Gradle
+
+Micronaut es compatible con Maven y Gradle, simplemente al crear el proyecto decides cúal quieres usar.
+
+W> Personalmente, prefiero Gradle y es lo que usaremos en el libro, pero si quieres usar Maven simplemente debes 
+indicárselo al comando `mn create-app` con la opción `--build maven`
+
+### Java vs Kotlin vs Groovy
+
+Micronaut, a diferencia de otros frameworks JVM como Quarkus por ejemplo, puede trabajar con Java, Kotlin o Groovy
+sin problemas.
+
+W> Yo soy un fan de Groovy y prefiero usarlo en mi trabajo, pero en los ejemplos del libro usaremos Java por ser 
+el lenguaje más común en el ecosistema JVM.
+
 ### Versiones
 
 Al tiempo de escribir este libro Micronaut se encuentra en su versión 5.0.x y es la que usaremos, aunque versiones anteriores son también perfectamente válidas.
