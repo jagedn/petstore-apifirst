@@ -160,9 +160,9 @@ y abrimos un navegador en `http://localhost:8080/swagger-ui/index.html`
 
 Podemos comprobar que Micronaut OpenAPI ha generado el contrato correctamente y que Swagger UI se ha cargado correctamente.
 
-![PetStore Get](2.png)
+![PetStore Get](02.png)
 
-![PetResponse](3.png)
+![PetResponse](03.png)
 
 Es decir, **sin haber escrito ninguna línea de código**, tenemos un servidor REST que implementa el contrato OpenAPI.
 (obviamente, devuelve un error 404 a cada petición)
