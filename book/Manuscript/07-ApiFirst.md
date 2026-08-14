@@ -74,45 +74,81 @@ Vamos a crear el archivo `petstore-api.yml` en la carpeta `src/main/resources` (
 En esta primera iteración vamos a definir un único endpoint:
 
 ```yaml
-openapi: 3.0.0
+openapi: 3.0.3
 info:
-  title: Petstore API
+  title: Petstore Lite API
   version: 1.0.0
-  description: |
-    API 
+  description: Contrato API-First para la gestión de mascotas.
 
 servers:
-  - url: http://localhost:8080/
-    description: Servidor de pruebas
+  - url: http://localhost:8080
+    description: Servidor local de desarrollo
+
+tags:
+  - name: pets
+    description: Operaciones sobre el catálogo de mascotas
 
 paths:
   /v1/pets:
-    get:
-      summary: Obtener un pet
-      operationId: getPetById
+    post:
+      summary: Crear una nueva mascota
+      operationId: createPet
       tags:
         - pets
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreatePetRequest'
       responses:
         '201':
-          description: pet
+          description: Mascota creada correctamente
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/PetResponse'
+        '400':
+          description: Datos de entrada no válidos
 
 components:
   schemas:
+
+    CreatePetRequest:
+      type: object
+      required:
+        - name
+        - age
+      properties:
+        name:
+          type: string
+          minLength: 2
+          example: "Tiramisu"
+        age:
+          type: integer
+          format: int32
+          minimum: 0
+          example: 3
+
     PetResponse:
       type: object
+      required:
+        - id
+        - name
+        - age
+
       properties:
         id:
           type: integer
           format: int64
+          example: 1
         name:
           type: string
+          example: "Tiramisu"
         age:
           type: integer
           format: int32
+          example: 3
 ```
 
 y ahora sí podremos ejecutar el _build_ del proyecto.
@@ -127,18 +163,22 @@ Sin embargo, si revisamos la carpeta `build/generated/openapi` veremos que se ha
 (_generateServerOpenApiApis_ y _generateServerOpenApiModels_)
 y dentro de ellas podemos ver el código generado por Micronaut OpenAPI.
 
-Por ejemplo se ha creado un interface _PetsApi.java_ anotada como _Controller_:
+Por ejemplo se ha creado un interface _PetsApi.java_ anotada como _Controller_ junto con la 
+definición del endpoint y sus parámetros:
 
 ```java
 package com.incsteps.http.api;
     ....
 @Controller
 public interface PetsApi {
-    
+    @Post("/v1/pets")
+    HttpResponse<@Valid PetResponse> createPet(
+            @Body @NotNull @Valid CreatePetRequest createPetRequest
+    );
 }
 ```
 
-y un _PetResponse.java_ que representa el modelo de la respuesta anotado como _Serdeable_:
+y una clase _CreatePetRequest.java_ y _PetResponse.java_ que representan el modelo de la entrada/salida anotados como _Serdeable_:
 
 ```java
 @Serdeable
@@ -148,7 +188,7 @@ public class PetResponse {
 }
 ```
 
-W> Estas clases *NO* hay que versionarlas pues son generadas por Micronaut a partir del archivo OpenAPI en cada build.
+W> Estas clases *NO* hay que versionarlas, pues son generadas por Micronaut a partir del archivo OpenAPI en cada build.
 
 ## Run
 

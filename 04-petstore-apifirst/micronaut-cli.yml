@@ -1,0 +1,6 @@
+applicationType: default
+defaultPackage: com.incsteps
+testFramework: spock
+sourceLanguage: java
+buildTool: gradle
+features: [app-name, data, data-jdbc, gradle, http-client-test, java, java-application, jdbc-hikari, logback, micronaut-aot, micronaut-build, micronaut-configuration-validation-gradle-plugin, micronaut-http-validation, netty-server, openapi, postgres, properties, readme, serialization-jackson, shade, spock, static-resources, swagger-ui, test-resources, validation]
