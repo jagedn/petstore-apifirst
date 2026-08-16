@@ -2,9 +2,11 @@
 
 El objetivo de este libro es poder explicar los conceptos de una forma práctica por lo que se provee de enlaces a proyectos completos asi como código comentado. 
 
-A lo largo del libro vamos a implementar **Petstore Lite**, una versión super-reducida del famoso **PetStore** de Spring
+A lo largo del libro vamos a implementar **Petstore Lite**, una versión superreducida del famoso **PetStore** de Spring
 
-Petstore Lite es un servicio REST de ejemplo en el cual vamos a implementar solo unos pocos endpoints (crear, recuperar y borrar mascotas) usando mecanismos de persistencia temporal, es decir, cada vez que arranquemos la aplicación empezaremos desde cero, ya que el objetivo del libro es trabajar sobre los conceptos API-First, no tanto el tener una aplicación funcional completa.
+Petstore Lite es un servicio REST de ejemplo en el cual vamos a implementar solo unos pocos endpoints (crear, recuperar y borrar mascotas) 
+usando mecanismos de persistencia temporal, es decir, cada vez que arranquemos la aplicación empezaremos desde cero, 
+ya que el objetivo del libro es trabajar sobre los conceptos API-First, no tanto el tener una aplicación funcional completa.
 
 Así pues Petstore Lite permitirá:
 
@@ -15,14 +17,17 @@ Así pues Petstore Lite permitirá:
 
 ## Persistencia
 
-De cara a poder ver en acción todo el potencial de Micronaut, el proyecto contará con persistencia de datos (Postgres en este caso) con la particularidad de que dichos datos serán borrados en cada arranque de la aplicación.
+De cara a poder ver en acción todo el potencial de Micronaut, el proyecto contará con persistencia de datos 
+(Postgres en este caso) con la particularidad de que dichos datos serán borrados en cada arranque de la aplicación.
 
-A> Si se desea desplegar el proyecto manteniendo la persistencia, simplemente hay que proporcionar la configuración a una base de datos mediante variables de entorno lo cual queda fuera del objetivo de este libro.
+A> Si se desea desplegar el proyecto manteniendo la persistencia, simplemente hay que proporcionar la configuración 
+a una base de datos mediante variables de entorno lo cual queda fuera del objetivo de este libro.
 
 
 ## Entity
 
-Para este ejemplo vamos a usar una Entity muy simple, __PetEntity.java__, la cual simplemente guardará el nombre y la edad de la mascota asignándola un ID único
+Para este ejemplo vamos a usar una Entity muy simple, __PetEntity.java__, la cual simplemente guardará el nombre y 
+la edad de la mascota asignándola un ID único
 
 ```java
 package com.incsteps.repository;
@@ -44,11 +49,15 @@ public record PetEntity(
 - @Id le indica a Micronaut que el atributo será la clave principal de la entidad
 - @GeneratedValue es una anotación que le indica a Micronaut que el valor puede ser nulo y será asignado por el motor de la base de datos
 
-Como puedes observar vamos a usar `Record` en lugar de un `Pojo` con get/set. Micronaut nos permite usar los records asegurando así la inmutabilidad de las instancias que creemos
+{blurb, class: information}
+Como puedes observar vamos a usar `Record` en lugar de un `Pojo` con get/set. Micronaut nos permite usar los 
+records asegurando así la inmutabilidad de las instancias que creemos
+{/blurb}
 
 ## Repository
 
-Siguiendo el patrón __Repository__ vamos a definir __PetstoreRepository.java__ que nos permitirá realizar las operaciones típicas contra la base de datos:
+Siguiendo el patrón __Repository__ vamos a definir __PetstoreRepository.java__ que nos permitirá realizar 
+las operaciones típicas contra la base de datos:
 
 ```java
 package com.incsteps.repository;
@@ -65,7 +74,8 @@ public interface PetstoreRepository extends CrudRepository<PetEntity, Long> {
 }
 ```
 
-En Micronaut, simplemente definiendo un interface que extienda de __CrudRepository__ y anotándolo con __JdbcRepository__ dispondremos de una clase que nos permitirá guardar, por ejemplo,
+En Micronaut, simplemente definiendo un interface que extienda de __CrudRepository__ y 
+anotándolo con __JdbcRepository__ dispondremos de una clase que nos permitirá guardar, por ejemplo,
 __PetEntity__ con una simple llamada:
 
 
@@ -73,7 +83,9 @@ __PetEntity__ con una simple llamada:
    petstoreRepositovy.save( new PetEntity(null, "tiramisu", 12));
 ```
 
-I> Micronaut Data proporciona diferentes formas de trabajar con bases de datos como Jdbc, JPA, Hibernate, etc. Para los ejemplos de este libro vamos a usar Jdbc por su simplicidad y eficiencia.
+{blurb, class: information}
+Micronaut Data proporciona diferentes formas de trabajar con bases de datos como Jdbc, JPA, Hibernate, etc. Para los ejemplos de este libro vamos a usar Jdbc por su simplicidad y eficiencia.
+{/blurb}
 
 A lo largo de los ejemplos usaremos esta Entity y Repository para crear el servicio REST de Petstore Lite, primero siguiendo
 CodeFirst y después API-First.

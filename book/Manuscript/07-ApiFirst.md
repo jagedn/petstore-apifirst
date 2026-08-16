@@ -151,11 +151,11 @@ components:
           example: 3
 ```
 
-y ahora sí podremos ejecutar el _build_ del proyecto.
+## Build
+
+Ahora sí podremos ejecutar el _build_ del proyecto.
 
 `$ ./gradlew build`
-
-## Generated
 
 Si revisamos la carpeta `src/main/java` veremos que **no** se han generado ninguna clase nueva.
 

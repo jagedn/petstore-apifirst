@@ -6,9 +6,9 @@ generando un simple _Controller_ y un par de clases _Model_ para representar los
 En este capítulo vamos a ampliar la definición del contrato así como, al fín, implementar la lógica de negocio que
 cumple con el contrato.
 
-## petstore-api.yml
+## Iteración 1
 
-En la iteración del equipo se decide que se necesitan los endpoints siguientes:
+En la primera iteración del equipo se decide que se necesitan los endpoints siguientes:
 
 - crear una nueva mascota
 - actualizar una mascota existente
@@ -19,7 +19,7 @@ Además, se decide añadir un atributo __status__ a la mascota. Este atributo pu
 - `AVAILABLE`
 - `ADOPTED`
 
-Este atributo podrá ser usado como filtro para listar las mascotas.
+Este atributo podrá ser usado como filtro para listar las mascotas en un futuro.
 
 I> En el proyecto `04-pestore-apifirst` puedes encontrar el contrato completo de la API. 
 
@@ -32,7 +32,7 @@ por Micronaut.
 ## Model
 
 En primer lugar, podemos ver que Micronaut ha generado unas clases Java que representan el modelo de la API
-en la carpeta `build/generated/openapi/generateServerOpenApiMoels/main/java/com/incsteps/http/model/`
+en la carpeta `build/generated/openapi/generateServerOpenApiModels/main/java/com/incsteps/http/model/`
 incluido el enum `PetStatus`.
 
 El modelo generado son simples clases POJO con todas las anotaciones necesarias para cumplir con el contrato, como
@@ -59,9 +59,14 @@ valores definidos:
 ```
 
 El plugin de Micronaut es capaz así de generar un enum para representar los valores posibles de este atributo.
-Pero no sólo eso, si inspeccionamos el código generado podemos ver que NO solo se ha generado una clase `PetStatus.java` con los
+Pero no solo eso, si inspeccionamos el código generado podemos ver que NO solo se ha generado una clase `PetStatus.java` con los
 valores definidos, sino que Micronaut ha generado un Factory que permita convertir de String a `PetStatus` y viceversa.
 
+### Validaciones
+
+Como se puede ver, Micronaut ha generado una clase `CreatePetRequest.java` que incluye las anotaciones necesarias para
+validar los datos de entrada **extraídas** directamente del contrato OpenAPI. Esto facilita y asegura que la implementación
+cumpla las reglas de negocio definidas en el mismo.
 
 ## Controller
 
@@ -121,16 +126,35 @@ public class PetsController implements PetsApi{
     private final DeletePetUseCase deletePetUseCase;
     private final GetPetUseCase getPetUseCase;
     ...
+}
+```
 
+I> Al igual que en el ejemplo de CodeFirst (`02-petstore-codefirst`), hemos optado en la implementación por crear unos UseCase
+donde se encuentran las reglas de negocio, de tal forma que el Controller solo tiene que llamar a los UseCase.
+
+Ahora ya sí podemos implementar las operaciones del contrato. 
+
+Por ejemplo el crear una mascota:
+
+```java
     @Override
     public HttpResponse<@Valid PetResponse> createPet(CreatePetRequest createPetRequest) {
         return HttpResponse.created(createPetUseCase.create(createPetRequest));        
     }
-}
 ```
 
-Al igual que en el ejemplo de CodeFirst (`02-CodeFirst`), hemos optado en la implementación por crear unos UseCase
-donde se encuentran las reglas de negocio, de tal forma que el Controller solo tiene que llamar a los UseCase.
+W> Por no complicar el ejemplo, los UseCase reciben directamente los datos de entrada creados por Micronaut.
+En un proyecto real, definiríamos unos DTOs de dominio agnósticos de la capa de entrada.
+
+O cómo devolver que una mascota ha sido borrada:
+
+```java
+@Override
+public HttpResponse<Void> deletePet(Long id) {
+    deletePetUseCase.delete(id);
+    return HttpResponse.noContent();
+}
+```
 
 En el código anterior podemos apreciar algunos detalles:
 
@@ -177,3 +201,7 @@ Y aquí es donde vemos la diferencia entre CodeFirst y ApiFirst: El contrato **o
 definidos en el mismo.
 
 Para poder "avanzar" con el proyecto tendremos que implementar el nuevo método `getPets` en la clase `PetsController.java`.
+
+I> En el proyecto `05-petstore-apifirst` tienes una implementación inicial de la clase `PetsController.java` que
+puedes ver en el fichero `src/main/java/com/incsteps/http/controller/PetsController.java`.
+

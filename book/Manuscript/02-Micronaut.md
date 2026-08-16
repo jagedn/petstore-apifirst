@@ -1,6 +1,6 @@
 # Micronaut
 
-Durante más de dos década, los frameworks en el ecosistema Java han confiado fuertemente en la reflexión en tiempo de ejecución (runtime reflection), la carga dinámica de clases y la generación de proxies en memoria para implementar Inyección de Dependencias (DI) y Programación Orientada a Aspectos (AOP) siendo Spring el framework de referencia en el desarrollo de aplicaciones.
+Durante más de dos décadas, los frameworks en el ecosistema Java han confiado fuertemente en la reflexión en tiempo de ejecución (runtime reflection), la carga dinámica de clases y la generación de proxies en memoria para implementar Inyección de Dependencias (DI) y Programación Orientada a Aspectos (AOP) siendo Spring el framework de referencia en el desarrollo de aplicaciones.
 
 Esta arquitectura funcionó bien durante la era de los servidores de aplicaciones monolíticos que funcionaban de forma ininterrumpida. Sin embargo, en el paradigma actual de contenedores (Docker/Kubernetes), microservicios y Serverless, este modelo tradicional presenta dos problemas graves: tiempos de arranque elevados y un alto consumo de memoria RAM.
 
@@ -18,20 +18,19 @@ Micronaut es un framework JVM moderno y modular diseñado específicamente para 
 - **Cero reflexión en runtime**: Al no depender de la reflexión para la inyección de dependencias, el tiempo de arranque de la aplicación es prácticamente independiente de la cantidad de beans o controladores que tenga el proyecto
 - **Consumo mínimo de memoria**: La eliminación de caches de reflexión internas permite que la aplicación arranque consumiendo una fracción de la memoria RAM requerida por otros frameworks tradicionales.
 
-### Maven vs Gradle
+### Maven o Gradle
 
 Micronaut es compatible con Maven y Gradle, simplemente al crear el proyecto decides cúal quieres usar.
 
 W> Personalmente, prefiero Gradle y es lo que usaremos en el libro, pero si quieres usar Maven simplemente debes 
 indicárselo al comando `mn create-app` con la opción `--build maven`
 
-### Java vs Kotlin vs Groovy
+### Java, Kotlin o Groovy
 
 Micronaut, a diferencia de otros frameworks JVM como Quarkus por ejemplo, puede trabajar con Java, Kotlin o Groovy
 sin problemas.
 
-W> Yo soy un fan de Groovy y prefiero usarlo en mi trabajo, pero en los ejemplos del libro usaremos Java por ser 
-el lenguaje más común en el ecosistema JVM.
+W> Yo soy un fan de Groovy, pero en los ejemplos del libro usaremos Java por ser el lenguaje más común en el ecosistema JVM.
 
 ### Versiones
 
@@ -39,21 +38,26 @@ Al tiempo de escribir este libro Micronaut se encuentra en su versión 5.0.x y e
 
 Si bien Micronaut demuestra ser un framework muy vivo, con releases frecuentes, la transición entre ellas es muy cuidada y fácil. 
 
-   En muchos casos basta con cambiar el numero de version y todo el proyecto sigue siendo valido. En mi experiencia personal la mayor dificultad se presento al pasar de las versiones 2.x a 3.x, pero no he encontrado mayores problemas al pasar de 3.x a 4.x o recientemente de 4.x a 5.x, aunque siempre dependera de las dependencias y caracteristicas de tu propio proyecto
+{blockquote}
+En muchos casos basta con cambiar el número de versión y todo el proyecto sigue siendo válido. En mi experiencia personal la mayor dificultad 
+se presentó al pasar de las versiones 2.x a 3.x, pero no he encontrado mayores problemas al pasar de 3.x a 4.x o recientemente de 4.x a 5.x, aunque siempre dependerá de
+las dependencias y características de tu propio proyecto
+{/blockquote}
 
 ## Singleton e Inject
 
-A lo largo del libro iremos usando diferentes funcionalidades de Micronaut, casi todas implementadas por el framework mediante anotaciones, pero antes de irlas descubriendo nos pararemos un segundo a explicar las dos que más se usan,
-o al menos que yo uso.
+A lo largo del libro iremos usando diferentes funcionalidades de Micronaut, casi todas implementadas por el framework mediante anotaciones, 
+pero antes de irlas descubriendo nos pararemos un segundo a explicar las dos que más se usan a lo largo del libro.
 
+Si has trabajado con Spring las anotaciones __@Bean__ , __@Service__, __@Prototype__, etc. te sonarán familiares. 
 
-Si has trabajado con Spring las anotaciones __@Bean__ , __@Service__, __@Prototype__, etc te sonarán familiares. 
+Con estas anotaciones indicamos al framework que estas clases son especiales y que están destinadas a ser inyectadas en otras 
+clases, bien mediante métodos _setXXX_ o, preferiblemente, en el constructor de las clases dependientes de ellas.
 
-Con estas anotaciones indicamos al framework que estas clases son especiales y que están destinadas a ser inyectadas en otras clases bien mediante métodos _setXXX_ o, preferiblemente, en el constructor de las clases dependientes de ellas.
+De forma similar Micronaut no solo proporciona las suyas propias, sino que utiliza las definidas en los JSR como por ejemplo __@Singleton__
 
-De forma similar Micronaut no sólo proporciona las suyas propias sino que utiliza las definidas en los JSR como por ejemplo __@Singleton__
-
-Con esta anotación indicamos al framework que nuestra aplicación requiere de una sóla instancia de esta clase, la cual deberá ser proporcionada en aquellos puntos en las que se indique.
+Con esta anotación indicamos al framework que nuestra aplicación requiere de una sóla instancia de esta clase, 
+la cual deberá ser proporcionada en aquellos puntos en las que se indique.
 
 Un ejemplo sencillo:
 
@@ -61,7 +65,9 @@ Un ejemplo sencillo:
 @Singleton
 public class TestService{
 
-    void sayHello(){ ... }
+    void sayHello(){ 
+        System.out.println("Hello");
+    }
 
 }
 
@@ -93,7 +99,7 @@ public class UseCase2{
 
 En este ejemplo vemos cómo le indicamos a Micronaut que nuestra aplicación consta de tres clases y que queremos una sóla de cada una (al anotarlas como @Singleton)
 
-Además le decimos a Micronaut que en tiempo de compilacion, antes de crear _UseCase1_ y _UseCase2_ tiene que crear _TestService_ . 
+Además, le decimos a Micronaut que en tiempo de compilación, antes de crear _UseCase1_ y _UseCase2_ tiene que crear _TestService_. 
 
 Así mismo una vez que se haya creado _UseCase1_ tiene que asignarle a la variable _testService_ la instancia creada anteriormente (al anotarla con __@Inject__).
 
@@ -101,8 +107,8 @@ De la misma forma, cuando se vaya a llamar al constructor de _UseCase2_ se tiene
 
 A lo largo del libro veremos alguna otra anotación, como __@Controller__, __@Transactional__ pero son más fáciles de entender y casi autoexplicativas
 
-El enfoque de Micronaut, **a diferencia del de Spring** , es que todo esto puede hacerlo en **tiempo de compilación**, es decir, Micronaut genera e inyecta código que resuelven
-todos estos detalles y los incorpora a nuestro "jar" como si los hubieramos escrito nosotros mismos. Por el contrario Spring utiliza las anotaciones para, en **tiempo de ejecución**
+El enfoque de Micronaut, **a diferencia del de Spring**, es que todo esto puede hacerlo en **tiempo de compilación**, es decir, Micronaut genera e inyecta código que resuelven
+todos estos detalles y los incorpora a nuestro "jar" como si los hubiéramos escrito nosotros mismos. Por el contrario, Spring utiliza las anotaciones para, en **tiempo de ejecución**
 descubrir estos detalles y resolver las dependencias entre los Singletons
 
 
@@ -114,19 +120,24 @@ Quarkus es un framework que comparte muchas características e incluso historia 
 
 La diferencia principal radica en la filosofía: Quarkus adopta el estándar MicroProfile/Jakarta EE y está muy optimizado para el ecosistema Kubernetes/Red Hat, mientras que Micronaut mantiene una sintaxis extremadamente cercana a Spring, facilitando la transición a desarrolladores acostumbrados al paradigma de Spring.
 
-Aunque no lo he usado tanto como me gustaría Quarkus es otro framework muy maduro y con funcionalidades muy interesantes. Particularmente no lo he usado tanto porque no se puede usar Groovy, lenguaje que me aposiona, pero por lo demás
+Aunque no lo he usado tanto como me gustaría Quarkus es otro framework muy maduro y con funcionalidades muy interesantes. 
+Particularmente no lo he usado tanto porque no se puede usar Groovy, lenguaje que me apasiona, pero por lo demás
 es un framework tan bueno, en mi experiencia, como Micronaut.
 
 
 ## ApiFirst con Micronaut
 
-En una estrategia API-First, la especificación OpenAPI actúa como la fuente de verdad. Para llevar esto a producción de forma eficiente, necesitamos que la traducción del contrato OpenAPI a interfaces y controladores de Java no suponga una penalización de rendimiento en runtime.
+En una estrategia API-First, la especificación OpenAPI actúa como la fuente de verdad. 
+Para llevar esto a producción de forma eficiente, necesitamos que la traducción del contrato OpenAPI a interfaces 
+y controladores de Java no suponga una penalización de rendimiento en runtime.
 
-El procesador de anotaciones de Micronaut no solo genera el servidor HTTP, sino que analiza la especificación OpenAPI durante la compilación para:
+El procesador de anotaciones de Micronaut no solo genera el servidor HTTP, sino que analiza 
+la especificación OpenAPI durante la compilación para:
 
 - Validar la consistencia de los tipos de datos antes de ejecutar la aplicación.
 - Generar clases DTO y clientes HTTP sin añadir metadatos en runtime.
 - Proporcionar documentación Swagger/OpenAPI estática.
 
-En los próximos capítulos veremos la diferencia en la práctica, comparando la implementación directa basada en código con la generación automática mediante contratos.
+En los próximos capítulos veremos la diferencia en la práctica, comparando la implementación directa basada en código 
+con la generación automática mediante contratos.
 

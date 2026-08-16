@@ -128,7 +128,7 @@ Por ahora vamos a definir solo el interface http para obtener un Pet por su ID p
     }
 ```
 
-De la misma forma que en el caso de obtener un Pet por su ID, por ahora vamos a devolver un bad request.
+Al igual que en el caso de obtener un Pet por su ID, por ahora vamos a devolver un bad request.
 
 ### Delete Pet
 

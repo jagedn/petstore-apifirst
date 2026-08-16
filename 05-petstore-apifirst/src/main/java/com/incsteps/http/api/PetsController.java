@@ -42,7 +42,7 @@ public class PetsController implements PetsApi{
     @Override
     public HttpResponse<Void> deletePet(Long id) {
         deletePetUseCase.delete(id);
-        return HttpResponse.ok();
+        return HttpResponse.noContent();
     }
 
     @Override
