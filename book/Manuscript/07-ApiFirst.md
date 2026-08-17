@@ -44,7 +44,7 @@ micronaut {
         ...
     }
     openapi {
-        server(file("src/main/resources/petstore-api.yml")) {
+        server(file("src/main/resources/openapi/petstore-api.yml")) {
             apiPackageName = "com.incsteps.http.api"
             modelPackageName = "com.incsteps.http.model"
             useReactive = false
@@ -69,7 +69,9 @@ Si intentamos ejecutar el proyecto ahora el plugin nos dará un error y abortar�
 
 ## Construir el contrato
 
-Vamos a crear el archivo `petstore-api.yml` en la carpeta `src/main/resources` (Dispones de un ejemplo completo en el repositorio)
+Vamos a crear el archivo `petstore-api.yml` en la carpeta `src/main/resources/openapi` 
+
+T> Dispones del spec completo en el proyecto de ejemplo `04-petstore-apifirst`
 
 En esta primera iteración vamos a definir un único endpoint:
 
@@ -178,7 +180,7 @@ public interface PetsApi {
 }
 ```
 
-y una clase _CreatePetRequest.java_ y _PetResponse.java_ que representan el modelo de la entrada/salida anotados como _Serdeable_:
+y una clase _CreatePetRequest.java_ y _PetResponse.java_ que representan el modelo de la entrada/salida anotado como _Serdeable_:
 
 ```java
 @Serdeable
@@ -206,3 +208,41 @@ Podemos comprobar que Micronaut OpenAPI ha generado el contrato correctamente y 
 
 Es decir, **sin haber escrito ninguna línea de código**, tenemos un servidor REST que implementa el contrato OpenAPI.
 (obviamente, devuelve un error 404 a cada petición)
+
+## Swagger-UI
+
+Swagger UI es una herramienta que nos permite visualizar y probar contratos OpenAPI. Indicándole la URL del contrato,
+construye una interfaz de usuario que permite interactuar con el servidor de una forma sencilla.
+
+Como hemos visto en el apartado anterior, Micronaut crea una ruta `/swagger-ui`   
+que nos permite visualizar el contrato OpenAPI mediante Swagger UI.
+
+Así mismo, Micronaut genera a su vez otro fichero OpenAPI, pero esta vez a partir del código generado y 
+configura Swagger UI para usarlo. Este fichero es prácticamente igual al que hemos creado en el apartado anterior, 
+pero no al 100%, por lo que configuraremos a Swagger UI para que use el original.
+
+Para ello configuraremos tanto el `application.properties` como `openapi.properties` generados por Micronaut.
+
+application.properties:
+
+```properties
+micronaut.router.static-resources.swagger-ui.mapping=/swagger-ui/**
+micronaut.router.static-resources.swagger-ui.paths=classpath\:META-INF/swagger/views/swagger-ui
+
+micronaut.router.static-resources.swagger.mapping=/swagger/**
+micronaut.router.static-resources.swagger.paths=classpath\:META-INF/swagger
+
+micronaut.router.static-resources.openapi.mapping=/openapi/**
+micronaut.router.static-resources.openapi.paths=classpath\:openapi
+```
+
+openapi.properties:
+
+```properties
+swagger-ui.enabled=true
+swagger-ui.spec.url=/openapi/petstore-api.yml
+```
+
+Procederemos ahora a recrear el proyecto y ejecutarlo.
+
+`$ ./gradlew clean build run`

@@ -103,7 +103,7 @@ al plugin gradle de Micronaut que lo haga por nosotros:
 
 ```groovy
 openapi {
-    server(file("src/main/resources/petstore-api.yml")) {
+    server(file("src/main/resources/openapi/petstore-api.yml")) {
         ...
         useAuth = true
     }
@@ -128,6 +128,14 @@ y en los endpoints correspondiente:
     post:
       summary: Crear una nueva mascota
       operationId: createPet
+      security:
+        - petstoreApiKey: [ ]
+      tags:
+        - pets
+      ....
+    delete:
+      summary: Eliminar una mascota
+      operationId: deletePet
       security:
         - petstoreApiKey: [ ]
       tags:
@@ -198,10 +206,31 @@ class ApiKeyTokenValidator implements TokenValidator<HttpRequest<?>>  {
 }
 ```
 
-I> El código completo de la clase se encuentra en el proyecto `06-petstore-apifirst`
+T> El código completo de la clase se encuentra en el proyecto `06-petstore-apifirst`
 
 Nuestro ejemplo simplemente comprueba si el API-KEY es igual a `petstore-secret-key`, lo cual no es la mejor
 implementación de seguridad, pero es suficiente para explicar el concepto.
+
+## Swagger UI
+
+Como en los ejemplos anteriores no habíamos implementado ningún mecanismo de seguridad, todos los endpoints eran
+accesibles. Tanto los del api como los recursos de Swagger UI. Sin embargo, ahora que hemos definido la seguridad
+de nuestra API, Micronaut rechazará toda petición que no tenga el API-KEY **o que no sea pública**, así que 
+configuraremos las rutas correspondientes en el archivo `application.properties`:
+
+application.properties
+```properties
+micronaut.security.intercept-url-map[0].pattern[0]=/swagger-ui/**
+micronaut.security.intercept-url-map[0].access[0]=isAnonymous()
+
+micronaut.security.intercept-url-map[1].pattern[0]=/swagger/**
+micronaut.security.intercept-url-map[1].access[0]=isAnonymous()
+
+micronaut.security.intercept-url-map[2].pattern[0]=/openapi/petstore-api.yml
+micronaut.security.intercept-url-map[2].access[0]=isAnonymous()
+
+```
+
 
 ## Tests
 

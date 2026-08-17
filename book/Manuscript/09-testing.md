@@ -79,5 +79,5 @@ otros frameworks como Spring optan por simular la API mediante un cliente tipado
 o simplemente con tests unitarios. En el caso de Micronaut, el coste es significativamente menor
 por lo que ejecutar los tests no penaliza el tiempo de build.
 
-I> En `05-petstore-apifirst` hay un ejemplo de un test de integración usando Spock
+T> En `05-petstore-apifirst` hay un ejemplo de un test de integración usando Spock
 

@@ -8,7 +8,7 @@ OpenAPI es el estándar abierto de facto en la industria para describir APIs RES
 Mantenido por la OpenAPI Initiative (bajo el paraguas de la Linux Foundation), permite definir endpoints, 
 formatos de entrada/salida, mecanismos de autenticación y esquemas de datos en un documento estructurado en formato YAML o JSON.
 
-I> En este capítulo se presenta el formato OpenAPI brevemente, pero puedes consultar toda la especificación en [OpenAPI](https://swagger.io/specification/)
+T> En este capítulo se presenta el formato OpenAPI brevemente, pero puedes consultar toda la especificación en [OpenAPI](https://swagger.io/specification/)
 
 
 ## Estructura básica
@@ -56,7 +56,7 @@ components:
       ...
 ```
 
-I> En el ejemplo anterior se ha utilizado el formato YAML, escrito a "mano" pero existen editores o plugins 
+T> En el ejemplo anterior se ha utilizado el formato YAML, escrito a "mano" pero existen editores o plugins 
 que facilitan la definición del OpenAPI de forma visual. Por ejemplo [Swagger Editor Online](https://editor.swagger.io/)
 es el editor online de referencia.
 

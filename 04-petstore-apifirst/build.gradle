@@ -87,7 +87,7 @@ micronaut {
 
     //CHANGE
     openapi {
-        server(file("src/main/resources/petstore-api.yml")) {
+        server(file("src/main/resources/openapi/petstore-api.yml")) {
             apiPackageName = "com.incsteps.http.api"
             modelPackageName = "com.incsteps.http.model"
             useReactive = false

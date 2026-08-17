@@ -3,7 +3,7 @@
 Una vez validado que contamos con el entorno de trabajo adecuado, y que la aplicación arranca correctamente, pasaremos
 a crear nuestra primera versión de Petstore Lite usando CodeFirst
 
-I> El código de este capítulo se encuentra en la carpeta **02-petstore-codefirst** del repositorio de github
+T> El código de este capítulo se encuentra en la carpeta **02-petstore-codefirst** del repositorio de github
 
 Partiendo del proyecto creado anteriormente, y como queremos proporcionar al equipo de FrontEnd una API REST válida
 cuanto antes, vamos a trabajar lo primero en la capa http definiendo los Controllers y los DTOs de entrada y salida.
@@ -135,7 +135,7 @@ Al igual que en el caso de obtener un Pet por su ID, por ahora vamos a devolver 
 De la misma forma que en el caso de obtener un Pet por su ID o crear un nuevo Pet, 
 definiremos un método DELETE para eliminar un Pet.
 
-I> Puedes ver el método completo en el archivo **PetstoreController.java** en la carpeta **02-petstore-codefirst** del repositorio de github.
+T> Puedes ver el método completo en el archivo **PetstoreController.java** en la carpeta **02-petstore-codefirst** del repositorio de github.
 
 ## Desplegando
 

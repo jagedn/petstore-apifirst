@@ -1,0 +1,195 @@
+openapi: 3.0.1
+info:
+  title: petstore
+  version: "0.0"
+paths:
+  /v1/pets:
+    get:
+      summary: Listar todas las mascotas
+      description: Listar todas las mascotas
+      operationId: getPets
+      parameters:
+      - name: status
+        in: query
+        description: Filtrar mascotas por su estado (optional)
+        explode: false
+        schema:
+          nullable: true
+          allOf:
+          - $ref: "#/components/schemas/PetStatus"
+      responses:
+        "200":
+          description: getPets 200 response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/PetResponse"
+      security:
+      - Authorization: []
+    post:
+      summary: Crear una nueva mascota
+      description: Crear una nueva mascota
+      operationId: createPet
+      requestBody:
+        description: (required)
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreatePetRequest"
+        required: true
+      responses:
+        "200":
+          description: createPet 200 response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PetResponse"
+      security:
+      - Authorization: []
+  /v1/pets/{id}:
+    get:
+      summary: Obtener una mascota por su ID
+      description: Obtener una mascota por su ID
+      operationId: getPetById
+      parameters:
+      - name: id
+        in: path
+        description: Identificador único de la mascota (required)
+        required: true
+        schema:
+          minimum: 1
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: getPetById 200 response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PetResponse"
+      security:
+      - Authorization: []
+    put:
+      summary: Actualizar una mascota existente
+      description: Actualizar una mascota existente
+      operationId: updatePet
+      parameters:
+      - name: id
+        in: path
+        description: Identificador único de la mascota (required)
+        required: true
+        schema:
+          minimum: 1
+          type: integer
+          format: int64
+      requestBody:
+        description: (required)
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdatePetRequest"
+        required: true
+      responses:
+        "200":
+          description: updatePet 200 response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PetResponse"
+      security:
+      - Authorization: []
+    delete:
+      summary: Eliminar una mascota
+      description: Eliminar una mascota
+      operationId: deletePet
+      parameters:
+      - name: id
+        in: path
+        description: (required)
+        required: true
+        schema:
+          minimum: 1
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: deletePet 200 response
+      security:
+      - Authorization: []
+components:
+  schemas:
+    CreatePetRequest:
+      required:
+      - age
+      - name
+      type: object
+      properties:
+        name:
+          minLength: 2
+          type: string
+          description: the name property value
+        age:
+          minimum: 0
+          type: integer
+          description: the age property value
+          format: int32
+        status:
+          nullable: true
+          allOf:
+          - $ref: "#/components/schemas/PetStatus"
+      description: CreatePetRequest
+    PetResponse:
+      required:
+      - age
+      - id
+      - name
+      - status
+      type: object
+      properties:
+        id:
+          type: integer
+          description: the id property value
+          format: int64
+        name:
+          type: string
+          description: the name property value
+        age:
+          type: integer
+          description: the age property value
+          format: int32
+        status:
+          $ref: "#/components/schemas/PetStatus"
+      description: PetResponse
+    PetStatus:
+      type: string
+      description: Gets or Sets PetStatus
+      enum:
+      - AVAILABLE
+      - ADOPTED
+      x-type: String
+    UpdatePetRequest:
+      type: object
+      properties:
+        name:
+          minLength: 2
+          type: string
+          description: the name property value
+          nullable: true
+        age:
+          minimum: 0
+          type: integer
+          description: the age property value
+          format: int32
+          nullable: true
+        status:
+          nullable: true
+          allOf:
+          - $ref: "#/components/schemas/PetStatus"
+      description: UpdatePetRequest
+  securitySchemes:
+    Authorization:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

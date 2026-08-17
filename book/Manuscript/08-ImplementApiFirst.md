@@ -21,7 +21,7 @@ Además, se decide añadir un atributo __status__ a la mascota. Este atributo pu
 
 Este atributo podrá ser usado como filtro para listar las mascotas en un futuro.
 
-I> En el proyecto `04-pestore-apifirst` puedes encontrar el contrato completo de la API. 
+T> En el proyecto `04-pestore-apifirst` puedes encontrar el contrato completo de la API. 
 
 Tomando como base el contrato del ejemplo `04-pestore-apifirst` ejecutaremos un build para analizar los artefactos generados
 por Micronaut.
@@ -85,7 +85,7 @@ Por ejemplo:
         - pets
   ....
 ```
-I> Indicando `pets` como tag Micronaut generará una clase `PetsApi.java` mientras que si el tag fuera `mascotas` se genera una clase `MascotasApi.java`.
+T> Indicando `pets` como tag Micronaut generará una clase `PetsApi.java` mientras que si el tag fuera `mascotas` se genera una clase `MascotasApi.java`.
 
 En un OpenAPI puede ser normal tener en el mismo contrato la definición de diferentes dominios de negocio.
 Usando diferentes tags en las diferentes operaciones a lo largo del fichero podemos hacer que Micronaut genere
@@ -192,7 +192,7 @@ al contrato:
                   $ref: '#/components/schemas/PetResponse'
 ```
 
-I> En el proyecto `05-pestore-apifirst` puedes encontrar el contrato completo de la API.
+T> En el proyecto `05-pestore-apifirst` puedes encontrar el contrato completo de la API.
 
 Si ejecutamos el build de nuevo, el compilador abortará la operación con un error. Ahora el interface _PetsApi.java_
 se ha modificado y define un nuevo método `getPets` que tiene que ser implementado en la clase `PetsController.java`.
@@ -202,6 +202,6 @@ definidos en el mismo.
 
 Para poder "avanzar" con el proyecto tendremos que implementar el nuevo método `getPets` en la clase `PetsController.java`.
 
-I> En el proyecto `05-petstore-apifirst` tienes una implementación inicial de la clase `PetsController.java` que
+T> En el proyecto `05-petstore-apifirst` tienes una implementación inicial de la clase `PetsController.java` que
 puedes ver en el fichero `src/main/java/com/incsteps/http/controller/PetsController.java`.
 

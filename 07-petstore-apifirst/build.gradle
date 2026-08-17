@@ -1,0 +1,144 @@
+plugins {
+    id("groovy") 
+    id("io.micronaut.application") version "5.0.2"
+    id("com.gradleup.shadow") version "9.4.1"
+    id("io.micronaut.test-resources") version "5.0.2"
+    id("io.micronaut.aot") version "5.0.2"
+
+    //CHANGE
+    id 'io.micronaut.openapi' version '5.0.2'
+}
+
+version = "0.1"
+group = "com.incsteps"
+
+
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    annotationProcessor("io.micronaut.data:micronaut-data-processor")
+    annotationProcessor("io.micronaut:micronaut-http-validation")
+    annotationProcessor("io.micronaut.openapi:micronaut-openapi")
+    annotationProcessor("io.micronaut.serde:micronaut-serde-processor")
+    annotationProcessor("io.micronaut.validation:micronaut-validation-processor")
+    implementation("io.micronaut.data:micronaut-data-jdbc")
+    implementation("io.micronaut.serde:micronaut-serde-jackson")
+    implementation("io.micronaut.sql:micronaut-jdbc-hikari")
+    implementation("io.micronaut.validation:micronaut-validation")
+    implementation("jakarta.validation:jakarta.validation-api")
+    //CHANGE
+    implementation("io.micronaut:micronaut-http-client")
+    compileOnly("io.micronaut.openapi:micronaut-openapi-annotations")
+    runtimeOnly("ch.qos.logback:logback-classic")
+    runtimeOnly("org.postgresql:postgresql")
+    testImplementation("io.micronaut:micronaut-http-client")
+
+    //CHANGE
+    aotPlugins("io.micronaut.security:micronaut-security-aot")
+    annotationProcessor("io.micronaut.security:micronaut-security-annotations")
+    implementation("io.micronaut.security:micronaut-security-jwt")
+}
+
+
+
+application {
+    mainClass = "com.incsteps.Application"
+}
+
+java {
+    sourceCompatibility = JavaVersion.toVersion("25")
+    targetCompatibility = JavaVersion.toVersion("25")
+}
+
+
+
+
+graalvmNative.toolchainDetection = false
+graalvmNative {
+    binaries {
+        all {
+            buildArgs.add("-H:+SharedArenaSupport")
+        }
+    }
+}
+
+
+micronaut {
+    runtime("netty")
+    testRuntime("spock2")
+    processing {
+        incremental(true)
+        annotations("com.incsteps.*")
+    }
+    testResources {
+        version = "4.0.0"
+    }
+    aot {
+        // Please review carefully the optimizations enabled below
+        // Check https://micronaut-projects.github.io/micronaut-aot/latest/guide/ for more details
+        optimizeServiceLoading = false
+        convertYamlToJava = false
+        precomputeOperations = true
+        cacheEnvironment = true
+        optimizeClassLoading = true
+        deduceEnvironment = true
+        optimizeNetty = true
+        replaceLogbackXml = true
+
+        //CHANGE
+        configurationProperties.put("micronaut.security.jwks.enabled","false")
+    }
+
+    //CHANGE
+    openapi {
+        server(file("src/main/resources/openapi/petstore-api.yml")) {
+            apiPackageName = "com.incsteps.http.api"
+            modelPackageName = "com.incsteps.http.model"
+            useReactive = false
+            useAuth = true
+        }
+        client(file('build/pokeapi-specs/pokeapi.yml')){
+            apiPackageName = "io.pokeapi.api"
+            modelPackageName = "io.pokeapi.model"
+            useReactive = false
+            useAuth = false
+            clientId = 'pokeapi'
+        }
+    }
+}
+tasks.withType(io.micronaut.gradle.testresources.StartTestResourcesService).configureEach {
+    useClassDataSharing = false
+}
+
+tasks.named("dockerfile") {
+
+    baseImage = "eclipse-temurin:25-jre"
+}
+
+
+
+
+
+
+
+// https://docs.gradle.org/current/userguide/upgrading_major_version_9.html#test_task_fails_when_no_tests_are_discovered
+tasks.withType(AbstractTestTask).configureEach {
+    failOnNoDiscoveredTests = false
+}
+
+//CHANGE
+def pokeapi = resources.text.fromUri(
+        "https://raw.githubusercontent.com/PokeAPI/pokeapi/refs/heads/master/openapi.yml"
+)
+tasks.register "pokeapi", Sync, {
+    from(pokeapi){
+        rename { 'pokeapi.yml' }
+    }
+    into layout.buildDirectory.dir("pokeapi-specs")
+}
+tasks.matching { it.name.startsWith("generateClientOpenApi") }.configureEach {
+    dependsOn(tasks.named("pokeapi"))
+}

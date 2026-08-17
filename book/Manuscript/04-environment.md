@@ -20,7 +20,7 @@ Podemos usar esta versión como la por defecto o continuar con la que usemos en 
 
 `$ sdk env`
 
-I> Cada proyecto del libro contiene un fichero `.sdkmanrc` que le indica a Sdkman qué version usar
+T> Cada proyecto del libro contiene un fichero `.sdkmanrc` que le indica a Sdkman qué version usar
 
 
 ## Micronaut
@@ -42,7 +42,7 @@ $ mn create-app --inplace --build=gradle --jdk=25 \
     com.incsteps.petstore
 ```
 
-I> Puedes usar tanto Gradle como Maven en Micronaut, así como usar JUnit o Spock para tus tests. Yo uso Gradle y Spock, pero para este libro es indiferente
+T> Puedes usar tanto Gradle como Maven en Micronaut, así como usar JUnit o Spock para tus tests. Yo uso Gradle y Spock, pero para este libro es indiferente
 
 Ahora comprobaremos si tenemos todo lo necesario para compilar y ejecutar la aplicación:
 
@@ -65,7 +65,7 @@ Si todo va bien veremos en consola algo como
 
 `$ Startup completed in 415ms. Server Running: http://localhost:8080`
 
-I> Aunque es la aplicación más sencilla del mundo, fíjate que ha levantado un servidor HTTP en 415 milisegundos!!
+T> Aunque es la aplicación más sencilla del mundo, fíjate que ha levantado un servidor HTTP en 415 milisegundos!!
 
 Y podremos ver nuestra primera aplicación abriendo un navegador en [](http://localhost:8080/swagger-ui)
 
