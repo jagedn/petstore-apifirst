@@ -1,3 +1,4 @@
+{sample: true}
 # OpenAPI
 
 Hasta ahora hemos delegado en Micronaut la tarea de generar el OpenAPI a partir de nuestras anotaciones (Code-First).

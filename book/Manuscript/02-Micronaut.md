@@ -1,3 +1,4 @@
+{sample: true}
 # Micronaut
 
 Durante más de dos décadas, los frameworks en el ecosistema Java han confiado fuertemente en la reflexión en tiempo de ejecución (runtime reflection), la carga dinámica de clases y la generación de proxies en memoria para implementar Inyección de Dependencias (DI) y Programación Orientada a Aspectos (AOP) siendo Spring el framework de referencia en el desarrollo de aplicaciones.

@@ -1,3 +1,4 @@
+{sample: true}
 # Bienvenido
 
 Bienvenido a esta guía práctica de **Api-First** con **Micronaut**. El objetivo de este libro es ir más allá de la teoría del diseño de APIs y construir, paso a paso, una aplicación simple pero funcional utilizando el ecosistema de Micronaut.

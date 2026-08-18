@@ -1,3 +1,4 @@
+{sample: true}
 # ApiFirst
 
 El concepto de API, o application programming interfaces, tiene mucha historia ya en el mundo de la computación moderna. 

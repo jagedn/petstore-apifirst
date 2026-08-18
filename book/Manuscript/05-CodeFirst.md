@@ -1,3 +1,4 @@
+{sample: true}
 # Code First
 
 Una vez validado que contamos con el entorno de trabajo adecuado, y que la aplicación arranca correctamente, pasaremos
