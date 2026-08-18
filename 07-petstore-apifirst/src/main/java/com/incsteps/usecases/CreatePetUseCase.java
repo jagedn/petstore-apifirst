@@ -36,7 +36,7 @@ public class CreatePetUseCase {
     }
 
     private PetEntity rename(CreatePetRequest request) {
-        if( "pokemon".equalsIgnoreCase(request.getName())) {
+        if( request.getName() == null || "".equalsIgnoreCase(request.getName())) {
             var response = pokemonApi.pokemonList(100, 0, null);
             Random r = new Random();
             var e = response.getResults().get(r.nextInt(response.getResults().size()));

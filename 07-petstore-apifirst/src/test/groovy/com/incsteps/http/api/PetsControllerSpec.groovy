@@ -21,7 +21,7 @@ class PetsControllerSpec extends Specification {
 
     void "debe validar el apikey para crear una mascota"() {
         given: "un payload válido de creación"
-        def requestBody = new CreatePetRequest("",0)
+        def requestBody = new CreatePetRequest()
                 .name("Firulais")
                 .age(3)
                 .status(PetStatus.AVAILABLE)
@@ -38,7 +38,7 @@ class PetsControllerSpec extends Specification {
 
     void "debe crear una mascota correctamente cuando los datos cumplen el contrato"() {
         given: "un payload válido de creación"
-        def requestBody = new CreatePetRequest("",0)
+        def requestBody = new CreatePetRequest()
                 .name("Firulais")
                 .age(3)
                 .status(PetStatus.AVAILABLE)
@@ -80,7 +80,7 @@ class PetsControllerSpec extends Specification {
 
     void "debe recuperar una mascota por su ID"() {
         given: "una mascota creada previa en la base de datos"
-        def createRequest = HttpRequest.POST("/v1/pets", new CreatePetRequest("",0)
+        def createRequest = HttpRequest.POST("/v1/pets", new CreatePetRequest()
                 .name("Rex")
                 .age(5)
                 .status(PetStatus.AVAILABLE))
@@ -97,5 +97,25 @@ class PetsControllerSpec extends Specification {
         response.status == HttpStatus.OK
         response.body().id == createdPet.id
         response.body().name == "Rex"
+    }
+
+    void "debe crear una mascota correctamente cuando el nombre está vacio el contrato"() {
+        given: "un payload válido de creación"
+        def requestBody = new CreatePetRequest()
+                .status(PetStatus.AVAILABLE)
+
+        def request = HttpRequest.POST("/v1/pets", requestBody)
+                .header("X-API-KEY","petstore-secret-key")
+
+
+        when: "se realiza la petición POST al servidor"
+        def response = client.toBlocking().exchange(request, PetResponse)
+
+        then: "responde 201 Created y retorna el recurso generado"
+        response.status == HttpStatus.CREATED
+        response.body() != null
+        response.body().id != null
+        response.body().name.length()
+        response.body().status == PetStatus.AVAILABLE
     }
 }
