@@ -20,7 +20,7 @@
 
 * [x] Jorge
 * [x] Blog https://blog.jagedn.dev
-* [x] Social @jorge@social.jagedn.dev
+* [x] Social @jorge@fediverse.jagedn.dev
 * [ ]  +++<del>+++Twitter, LinkedIn, Thread, BlueSky, Instagram ... +++</del>+++
 
 
