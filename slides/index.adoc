@@ -123,6 +123,14 @@ public class PetstoreController {
 
 http://localhost:8080/swagger-ui
 
+
+[background-image="background.jpg"]
+== ApiFirst
+
+__03-petstore-apifirst__
+
+- resources/openapi/petstore.yaml
+
 [.columns]
 [background-image="background.jpg"]
 == ApiFirst, Paths
@@ -189,23 +197,35 @@ components:
           example: 3
 ----
 
-== Demo
+== Artefactos
 
-__Demo 04-petstore-apifirst__
-
-- Gradle Plugin
+- build.gradle
+- application.properties
 - Generated classes
+
+== Implementación
+
+__04-petstore-apifirst__
+
+- Extendiendo Api
+- Usando Model
+- Añadiendo nuevos requisitos
+
+
+== Test
+
+__Demo 05-petstore-apifirst__
 
 == Security
 
-__Demo 05-petstore-apifirst__
+__Demo 06-petstore-apifirst__
 
 - ApiKey como ejemplo
 - JWT, Oauth ...
 
 == Consumer
 
-__Demo 06-petstore-apifirst__
+__Demo 07-petstore-apifirst__
 
 - promover http-client a implementation
 - Generated classes

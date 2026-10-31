@@ -10,6 +10,7 @@ import com.incsteps.usecases.DeletePetUseCase;
 import com.incsteps.usecases.GetPetUseCase;
 import io.micronaut.http.HttpResponse;
 import io.micronaut.http.annotation.Controller;
+import io.micronaut.security.utils.SecurityService;
 import jakarta.validation.Valid;
 
 import java.util.List;
@@ -23,7 +24,7 @@ public class PetsController implements PetsApi{
 
     public PetsController(CreatePetUseCase createPetUseCase,
                           DeletePetUseCase deletePetUseCase,
-                          GetPetUseCase getPetUseCase) {
+                          GetPetUseCase getPetUseCase, SecurityService securityService) {
         this.createPetUseCase = createPetUseCase;
         this.deletePetUseCase = deletePetUseCase;
         this.getPetUseCase = getPetUseCase;
